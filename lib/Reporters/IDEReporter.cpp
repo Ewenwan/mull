@@ -29,7 +29,11 @@ static void printMutant(Diagnostics &diagnostics, SourceManager &sourceManager,
                << ": " << mutant.getDiagnostics() << " [" << mutant.getMutatorIdentifier() << "]"
                << "\n";
   auto line = sourceManager.getLine(sourceLocation);
-  assert(sourceLocation.column < line.size());
+  if (sourceLocation.column >= line.size()) {
+    diagnostics.error("line: " + line);
+    diagnostics.error(std::string("sourceLocation.column: ") + std::to_string(sourceLocation.column));
+    exit(1);
+  }
 
   std::string caret(sourceLocation.column, ' ');
   for (size_t index = 0; index < sourceLocation.column; index++) {

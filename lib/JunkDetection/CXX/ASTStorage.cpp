@@ -174,7 +174,7 @@ ASTStorage::ASTStorage(Diagnostics &diagnostics, const std::string &cxxCompilati
       compilationDatabase(diagnostics, CompilationDatabase::Path(cxxCompilationDatabasePath),
                           CompilationDatabase::Flags(cxxCompilationFlags),
                           CompilationDatabase::BitcodeFlags(bitcodeCompilationFlags)),
-      mutations() {}
+      mutations(diagnostics) {}
 
 ThreadSafeASTUnit *ASTStorage::findAST(const MutationPoint *point) {
   assert(point);
@@ -182,6 +182,10 @@ ThreadSafeASTUnit *ASTStorage::findAST(const MutationPoint *point) {
 
   const std::string &sourceFile = point->getSourceLocation().unitFilePath;
 
+  return findAST(sourceFile);
+}
+
+ThreadSafeASTUnit *ASTStorage::findAST(const std::string &sourceFile) {
   std::lock_guard<std::mutex> guard(mutex);
   if (astUnits.count(sourceFile)) {
     return astUnits.at(sourceFile).get();

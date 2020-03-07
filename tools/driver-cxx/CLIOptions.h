@@ -40,6 +40,7 @@ extern list<ReporterKind> ReportersOption;
 extern opt<bool> IDEReporterShowKilled;
 
 extern opt<SandboxKind> SandboxOption;
+extern opt<bool> EnableAST;
 
 extern list<std::string> LDSearchPaths;
 extern list<std::string> ExcludePaths;

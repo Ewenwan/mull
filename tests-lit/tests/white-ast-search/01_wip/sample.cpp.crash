@@ -1,0 +1,16 @@
+int sum(int a, int b) {
+  return a + b;
+}
+
+int main() {
+  return sum(-2, 2);
+}
+
+/**
+; RUN: cd / && %CLANG_EXEC -fembed-bitcode -g -grecord-command-line %s -o %s.exe
+; RUN: cd %CURRENT_DIR
+; RUN: (unset TERM; %MULL_EXEC -enable-ast -test-framework CustomTest -mutators=cxx_arithmetic_add_to_sub -reporters=IDE -ide-reporter-show-killed %s.exe 2>&1; test $? = 0) | %FILECHECK_EXEC %s --strict-whitespace --match-full-lines
+; WITH-RECORD-COMMAND-LINE:[info] Found compilation flags in the input bitcode
+; WITH-RECORD-COMMAND-LINE-NOT:{{^.*[Ee]rror.*$}}
+**/
+

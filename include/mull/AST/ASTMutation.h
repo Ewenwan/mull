@@ -3,7 +3,7 @@
 #include <mull/Mutators/Mutator.h>
 
 namespace clang {
-  class Stmt;
+class Stmt;
 }
 
 namespace mull {
@@ -13,7 +13,8 @@ struct ASTMutation {
   int line;
   int column;
   const clang::Stmt *const stmt;
-  ASTMutation(MutatorKind mutatorKind, int line, int column, const clang::Stmt *const stmt)
+  ASTMutation(MutatorKind mutatorKind, int line, int column,
+              const clang::Stmt *const stmt)
       : mutatorKind(mutatorKind), line(line), column(column), stmt(stmt) {}
 };
 

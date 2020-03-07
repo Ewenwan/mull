@@ -1,6 +1,7 @@
 #pragma once
 
 #include "mull/AST/ASTMutation.h"
+#include "mull/Diagnostics/Diagnostics.h"
 #include "mull/Mutators/Mutator.h"
 
 #include <clang/AST/Expr.h>
@@ -22,8 +23,9 @@ LineColumnHash lineColumnHash(int line, int column);
 class ASTMutationStorage {
 public:
   std::unordered_map<SourceFilePath, SingleASTUnitMutations> storage;
+  Diagnostics &diagnostics;
 
-  ASTMutationStorage();
+  ASTMutationStorage(Diagnostics &diagnostics);
 
   int count() const;
 

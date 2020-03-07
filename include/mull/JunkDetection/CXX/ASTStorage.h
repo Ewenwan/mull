@@ -45,6 +45,7 @@ public:
              const std::map<std::string, std::string> &bitcodeCompilationFlags);
 
   ThreadSafeASTUnit *findAST(const MutationPoint *point);
+  ThreadSafeASTUnit *findAST(const std::string &sourceFile);
 
   const ASTMutation &getMutation(const std::string &sourceFile, mull::MutatorKind mutatorKind,
                                  int line, int column) const;

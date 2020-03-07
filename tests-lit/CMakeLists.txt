@@ -10,6 +10,7 @@ set(LIT_COMMAND
   FILECHECK_EXEC=${FILECHECK_EXEC}
   ${LIT_EXEC}
   --threads 1 # we want to remove this when Mull can be parallelized
+  --filter wip
   -vv
   ${CMAKE_CURRENT_SOURCE_DIR}/tests
 )

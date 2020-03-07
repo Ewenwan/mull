@@ -15,7 +15,8 @@ mull::LineColumnHash mull::lineColumnHash(int line, int column) {
   return (line + column) * (line + column + 1) / 2 + line;
 }
 
-ASTMutationStorage::ASTMutationStorage() : storage() {}
+ASTMutationStorage::ASTMutationStorage(Diagnostics &diagnostics)
+    : storage(), diagnostics(diagnostics) {}
 
 int ASTMutationStorage::count() const {
   int count = 0;
@@ -51,6 +52,8 @@ void ASTMutationStorage::saveMutation(const std::string &sourceFile, mull::Mutat
                                       const clang::Stmt *const expression, int line, int column) {
   assert(llvm::sys::fs::is_regular_file(sourceFile) || sourceFile == "input.cc");
 
+  diagnostics.info("Saving mutation: " + sourceFile + ":" + std::to_string(line) + ":" + std::to_string(column));
+
   int hash = mull::lineColumnHash(line, column);
 
   if (storage.count(sourceFile) == 0) {
@@ -61,6 +64,6 @@ void ASTMutationStorage::saveMutation(const std::string &sourceFile, mull::Mutat
     storage[sourceFile].emplace(mutatorKind, SingleMutationTypeBucket());
   }
 
-  storage[sourceFile][mutatorKind].emplace(hash,
-                                           ASTMutation(mutatorKind, line, column, expression));
+  storage[sourceFile][mutatorKind].emplace(
+      hash, ASTMutation(mutatorKind, line, column, expression));
 }

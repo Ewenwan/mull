@@ -13,9 +13,7 @@
 
 using namespace mull;
 
-template <typename Visitor>
-static bool isJunkMutation(ASTStorage &storage,
-                           MutationPoint *point) {
+template <typename Visitor> static bool isJunkMutation(ASTStorage &storage, MutationPoint *point) {
   auto ast = storage.findAST(point);
   auto location = ast->getLocation(point);
   clang::SourceManager &sourceManager = ast->getSourceManager();
@@ -41,16 +39,18 @@ static bool isJunkMutation(ASTStorage &storage,
     int beginLine = sourceManager.getExpansionLineNumber(location, nullptr);
     int beginColumn = sourceManager.getExpansionColumnNumber(location);
 
-    storage.saveMutation(
-        sourceFile, point->getMutator()->mutatorKind(), mutantExpression, beginLine, beginColumn);
+    storage.saveMutation(sourceFile,
+                         point->getMutator()->mutatorKind(),
+                         mutantExpression,
+                         beginLine,
+                         beginColumn);
     return false;
   }
 
   return true;
 }
 
-CXXJunkDetector::CXXJunkDetector(ASTStorage &astStorage)
-    : astStorage(astStorage) {}
+CXXJunkDetector::CXXJunkDetector(ASTStorage &astStorage) : astStorage(astStorage) {}
 
 bool CXXJunkDetector::isJunk(MutationPoint *point) {
   if (point->getSourceLocation().isNull()) {
